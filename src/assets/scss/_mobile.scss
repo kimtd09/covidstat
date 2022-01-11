@@ -1,0 +1,14 @@
+@media screen and (max-width: 480px) {
+    :root {
+        --page-margin: 20px;
+    }
+
+    .case-container {
+        justify-content: center;
+    }
+
+    .chart-toprow {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
