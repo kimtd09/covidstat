@@ -8,6 +8,7 @@ function CovidStat() {
     document.title = "COVID-19 Statistics";
 
     const _url_global = "https://api.covid19api.com/summary";
+
     const [date, setDate] = useState("");
     const [globalData, setGlobalData] = useState({ NewConfirmed: "", NewDeaths: "", TotalConfirmed: "", TotalDeaths: "", lehtalrate: "" });
     const [countriesData, setCountriesData] = useState({ labels: null, cases: null, deaths: null });
@@ -244,10 +245,10 @@ function CovidStat() {
         </header>
         <main>
             <nav><ul>
-                <li onClick={()=> setPage(()=> 1)}>Worldwide</li>
-                <li onClick={()=> setPage(()=> 2)}>Per Country</li>
+                <li className={page === 1 ? "page-selected" : ""} onClick={()=> setPage(()=> 1)}>Worldwide</li>
+                <li className={page === 2 ? "page-selected" : ""} onClick={()=> setPage(()=> 2)}>Per Country</li>
             </ul></nav>
-            <div className='' style={{display : `${page===1 ? "block" : "none"}`}}>
+            <div className='page' style={{display : `${page===1 ? "flex" : "none"}`}}>
                 <section className='global'>
                     <div className="global-container">
                         <span>last updated: {date}</span>
@@ -341,6 +342,9 @@ function CovidStat() {
                         </div>
                     </div>
                 </section>
+            </div>
+            <div className='' style={{display : `${page===2 ? "block" : "none"}`}}>
+                TODO
             </div>
         </main>
         <footer>

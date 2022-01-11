@@ -30,7 +30,7 @@ nav {
     ul {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        width: calc(100vw - var(--page-margin)*2);
+        width: calc(100vw - var(--page-margin) * 2);
         text-align: center;
         list-style: none;
         padding: 0;
@@ -40,20 +40,24 @@ nav {
 
     li {
         font-size: 20px;
-        color: $font;
+        color: gray;
         padding: 10px;
         border-bottom: 3px solid $bg_dark;
-
     }
 }
 
-.global {
-    margin-bottom: 20px;
+.page-selected {
+    border-bottom: 5px solid $nav_selected;
+}
 
-    hr {
-        border: none;
-        border-bottom: 1px silver solid;
-    }
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.global-container {
+    margin-top: 10px;
 }
 
 .chart-section {
@@ -69,7 +73,6 @@ nav {
     box-sizing: border-box;
     overflow: hidden;
     gap: 20px;
-    margin-bottom: 50px;
     hr {
         width: 100%;
     }
