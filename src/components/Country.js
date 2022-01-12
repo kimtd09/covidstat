@@ -14,7 +14,6 @@ function Country() {
     const refLineChart1 = useRef(null);
     const refLineChart2 = useRef(null);
 
-
     async function fetchData(_country, _days) {
         const _url0 = `https://api.covid19api.com/total/dayone/country/${_country}`;
         const _url = `https://corona.lmao.ninja/v2/historical/${_country}?lastdays=${_days}`;
@@ -23,7 +22,6 @@ function Country() {
             const response = await axios.get(_url0);
             const labelArray = [];
             const caseArray = [];
-            console.log(response.data);
 
             response.data.forEach(element => {
                 const date = new Date(element.Date);
@@ -41,13 +39,9 @@ function Country() {
                 }
             }
 
-            console.log(labelArray);
-            console.log(caseArray);
-            console.log(caseIncrementArray);
-
             const _newLineData = {
-                labels: labelArray.slice(labelArray.length-days,labelArray.length+1), datasets: [
-                    { label: "New Cases", backgroundColor: COLORS.green.border, borderColor: COLORS.green.border, data: caseIncrementArray.slice(labelArray.length-days,labelArray.length+1) }
+                labels: labelArray.slice(labelArray.length-_days,labelArray.length+1), datasets: [
+                    { label: "New Cases", backgroundColor: COLORS.green.border, borderColor: COLORS.green.border, data: caseIncrementArray.slice(labelArray.length-_days,labelArray.length+1) }
                 ]
             };
 
@@ -94,7 +88,7 @@ function Country() {
     function changeCountry(e) {
         e.preventDefault();
         if (e.target.firstChild.value.length > 0) {
-            fetchData(e.target.firstChild.value);
+            fetchData(e.target.firstChild.value, 30);
         }
     }
 
