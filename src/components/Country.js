@@ -1,15 +1,16 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { createElement, useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { COLORS } from "../assets/data/colors";
+import { countriesList } from "../assets/data/countries";
 
 function Country() {
 
     const [country, setCountry] = useState("France");
-    const [days, setDays] = useState(30);
+    const [days, setDays] = useState("30");
     const [apiresult, setApiResult] = useState("");
     const [data, setData] = useState({ labels: ["J", "F"], datasets: [{ label: "a", backgroundColor: COLORS.yellow.border, borderColor: COLORS.yellow.border, data: [1, 2] }] });
-    const [filter,setFilter] = useState(3);
+    const [filter, setFilter] = useState(3);
 
     const refLineChart0 = useRef(null);
     const refLineChart1 = useRef(null);
@@ -23,6 +24,8 @@ function Country() {
         try {
             const response = await axios.get(_url);
             setCountry(_country);
+            document.querySelector("form").reset();
+            setDays(() => _days);
             const labelArray = Object.keys(response.data.timeline.cases);
             const caseArray = Object.values(response.data.timeline.cases);
             const deathArray = Object.values(response.data.timeline.deaths);
@@ -38,22 +41,21 @@ function Country() {
                 ]
             };
 
-
             const caseIncrementArray = [];
             const deathIncrementArray = [];
 
-            for(let i=0; i<caseArray.length; i++) {
-                if(i === 0) {
+            for (let i = 0; i < caseArray.length; i++) {
+                if (i === 0) {
                     caseIncrementArray.push(0);
                     deathIncrementArray.push(0);
-                }else {
-                    caseIncrementArray.push(caseArray[i]-caseArray[i-1]);
-                    deathIncrementArray.push(deathArray[i]-deathArray[i-1]);
+                } else {
+                    caseIncrementArray.push(caseArray[i] - caseArray[i - 1]);
+                    deathIncrementArray.push(deathArray[i] - deathArray[i - 1]);
                 }
             }
 
-            const start = labelArray.length-_days;
-            const end = labelArray.length+1;
+            const start = labelArray.length - _days;
+            const end = labelArray.length + 1;
             const _newLineData0 = {
                 labels: labelArray.slice(start, end), datasets: [
                     { label: "New Cases", backgroundColor: COLORS.green.border, borderColor: COLORS.green.border, data: caseIncrementArray.slice(start, end) },
@@ -71,40 +73,70 @@ function Country() {
             refLineChart1.current.update();
             refLineChart2.current.update();
         } catch (e) {
-            console.log(e);
-            setApiResult((d) => d + e.message);
+            // console.log(e);
+            setApiResult(() => _country + ": country not found");
         }
     }
 
     useEffect(() => {
-        fetchData("France",30);
+        fetchData("France", "30");
     }, [])
 
     function changeCountry(e) {
         e.preventDefault();
+        setApiResult(() => "");
         if (e.target.firstChild.value.length > 0) {
-            fetchData(e.target.firstChild.value, 30);
-            setFilter(() => 3);
+            fetchData(e.target.firstChild.value, "30");
         }
     }
 
     function changeDays(_days) {
-        setDays(() => _days);
         fetchData(country, _days);
+    }
+
+    function resetSuggestions() {
+        setApiResult(() => "");
+        const span = document.querySelector(".search-container span");
+        while (span.firstChild) { span.removeChild(span.firstChild); }
+    }
+
+    function suggest(e) {
+        resetSuggestions();
+        const span = document.querySelector(".search-container span");
+
+        if (e.target.value.length > 2) {
+            span.innerHTML = "<span>suggestions:</span>";
+            countriesList.forEach(c => {
+                if (c.Country.toLowerCase().startsWith(e.target.value.toLowerCase())) {
+                    const b = document.createElement("button");
+                    b.value = c.Country;
+                    b.innerText = c.Country;
+                    b.onclick = suggestionSubmit;
+                    span.appendChild(b);
+                }
+            })
+        }
+    }
+
+    function suggestionSubmit() {
+        // console.log(this.value);
+        resetSuggestions();
+        fetchData(this.value, "30");
     }
 
     return <>
         <section className="search-container">
-            <form method="post" onSubmit={changeCountry}>
-                <input placeholder="search country"></input><button type="submit">OK</button><button type="reset">reset</button>
+            <form method="post" onSubmit={changeCountry} onReset={resetSuggestions}>
+                <input placeholder="search country" onChange={suggest}></input><button type="submit">OK</button><button type="reset">X</button>
             </form>
             <div className="api_result">{apiresult}</div>
+            <span></span>
         </section>
         <h2>{country}</h2>
         <ul className="country-filters">
-            <li className={filter === 1 ? "li-selected" : ""} onClick={() => {changeDays("all"); setFilter(()=> 1)}}>all</li>
-            <li className={filter === 2 ? "li-selected" : ""} onClick={() => {changeDays("90"); setFilter(()=> 2)}}>last 3 months</li>
-            <li className={filter === 3 ? "li-selected" : ""} onClick={() => {changeDays("30"); setFilter(()=> 3)}}>last 30 days</li>
+            <li className={days === "all" ? "li-selected" : ""} onClick={() => { changeDays("all"); setFilter(() => 1) }}>all</li>
+            <li className={days === "90" ? "li-selected" : ""} onClick={() => { changeDays("90"); setFilter(() => 2) }}>last 3 months</li>
+            <li className={days === "30" ? "li-selected" : ""} onClick={() => { changeDays("30"); setFilter(() => 3) }}>last 30 days</li>
         </ul>
         <div className="country-chart-container">
             <Line data={data} ref={refLineChart0} />

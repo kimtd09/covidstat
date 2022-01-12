@@ -392,15 +392,38 @@ footer {
       -ms-flex-pack: center;
           justify-content: center;
   gap: 10px;
-  height: 80px;
+  height: 100px;
   width: 100%;
   background-color: #f0f1f5;
+  border-radius: 15px;
+  border: 1px solid #e4e7ec;
 }
 
 .search-container input {
   width: 250px;
   height: 25px;
   text-align: center;
+}
+
+.search-container span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 5px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.search-container span button {
+  color: white;
+  width: auto;
+  height: auto;
+  border-radius: 5px;
+  padding: 4px 6px;
+  background-color: #2e86de;
 }
 
 .country-chart-container {
@@ -422,6 +445,9 @@ footer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -441,5 +467,18 @@ footer {
 
 h2 {
   text-transform: capitalize;
+}
+
+form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 5px;
+}
+
+form button {
+  width: 50px;
+  background-color: white;
+  border: 1px solid gray;
 }
 /*# sourceMappingURL=style.css.map */

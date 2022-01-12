@@ -2,7 +2,7 @@
  * provided by https://api.covid19api.com/countries
  */
 
-export const countries = [
+export const countriesList = [
     {
         "Country": "Jordan",
         "Slug": "jordan",
