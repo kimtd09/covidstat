@@ -438,4 +438,8 @@ footer {
 .li-selected {
   border-bottom: 2px solid #2e86de;
 }
+
+h2 {
+  text-transform: capitalize;
+}
 /*# sourceMappingURL=style.css.map */

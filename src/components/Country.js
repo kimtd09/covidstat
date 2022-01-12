@@ -84,6 +84,7 @@ function Country() {
         e.preventDefault();
         if (e.target.firstChild.value.length > 0) {
             fetchData(e.target.firstChild.value, 30);
+            setFilter(() => 3);
         }
     }
 
