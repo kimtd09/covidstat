@@ -9,6 +9,7 @@ function Country() {
     const [days, setDays] = useState(30);
     const [apiresult, setApiResult] = useState("");
     const [data, setData] = useState({ labels: ["J", "F"], datasets: [{ label: "a", backgroundColor: COLORS.yellow.border, borderColor: COLORS.yellow.border, data: [1, 2] }] });
+    const [filter,setFilter] = useState(3);
 
     const refLineChart0 = useRef(null);
     const refLineChart1 = useRef(null);
@@ -99,12 +100,11 @@ function Country() {
             <div className="api_result">{apiresult}</div>
         </section>
         <h2>{country}</h2>
-        <ul>
-            <li onClick={() => changeDays("all")}>all</li>
-            <li onClick={() => changeDays("90")}>last 3 months</li>
-            <li onClick={() => changeDays("30")}>last 30 days</li>
+        <ul className="country-filters">
+            <li className={filter === 1 ? "li-selected" : ""} onClick={() => {changeDays("all"); setFilter(()=> 1)}}>all</li>
+            <li className={filter === 2 ? "li-selected" : ""} onClick={() => {changeDays("90"); setFilter(()=> 2)}}>last 3 months</li>
+            <li className={filter === 3 ? "li-selected" : ""} onClick={() => {changeDays("30"); setFilter(()=> 3)}}>last 30 days</li>
         </ul>
-        <hr />
         <div className="country-chart-container">
             <Line data={data} ref={refLineChart0} />
             <Line data={data} ref={refLineChart1} />

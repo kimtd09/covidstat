@@ -7,7 +7,7 @@
     height: 80px;
     width: 100%;
     background-color: $bg_medium;
-    
+
     input {
         width: 250px;
         height: 25px;
@@ -18,8 +18,27 @@
 .country-chart-container {
     display: flex;
     flex-direction: column;
-    width: calc(100vw - var(--page-margin)*2);
+    width: calc(100vw - var(--page-margin) * 2);
     margin-top: 50px;
     gap: 50px;
     box-sizing: border-box;
+}
+
+.country-filters {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: 5px;
+    border-bottom: 1px solid $bg_dark;
+
+    li {
+        cursor: pointer;
+        color: $font_gray;
+        padding: 5px 10px;
+    }
+}
+
+.li-selected {
+    border-bottom: 2px solid $nav_selected;
 }
