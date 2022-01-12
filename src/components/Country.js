@@ -18,40 +18,6 @@ function Country() {
         const _url0 = `https://api.covid19api.com/total/dayone/country/${_country}`;
         const _url = `https://corona.lmao.ninja/v2/historical/${_country}?lastdays=${_days}`;
 
-        try {
-            const response = await axios.get(_url0);
-            const labelArray = [];
-            const caseArray = [];
-
-            response.data.forEach(element => {
-                const date = new Date(element.Date);
-                labelArray.push(date.toLocaleDateString());
-                caseArray.push(element.Confirmed);
-            });
-
-            const caseIncrementArray = [];
-
-            for(let i=0, end=caseArray.length-1; i<caseArray.length; i++) {
-                if(i === 0) {
-                    caseIncrementArray.push(caseArray[i]);
-                }else {
-                    caseIncrementArray.push(caseArray[i]-caseArray[i-1]);
-                }
-            }
-
-            const _newLineData = {
-                labels: labelArray.slice(labelArray.length-_days,labelArray.length+1), datasets: [
-                    { label: "New Cases", backgroundColor: COLORS.green.border, borderColor: COLORS.green.border, data: caseIncrementArray.slice(labelArray.length-_days,labelArray.length+1) }
-                ]
-            };
-
-            refLineChart0.current.data = _newLineData;
-            refLineChart0.current.update();
-        } catch (e) {
-            console.log(e);
-            setApiResult((d) => e.message);
-        }
-
 
         try {
             const response = await axios.get(_url);
@@ -71,6 +37,34 @@ function Country() {
                 ]
             };
 
+
+            const caseIncrementArray = [];
+            const deathIncrementArray = [];
+
+            for(let i=0; i<caseArray.length; i++) {
+                if(i === 0) {
+                    caseIncrementArray.push(0);
+                    deathIncrementArray.push(0);
+                }else {
+                    caseIncrementArray.push(caseArray[i]-caseArray[i-1]);
+                    deathIncrementArray.push(deathArray[i]-deathArray[i-1]);
+                }
+            }
+
+            const start = labelArray.length-_days;
+            const end = labelArray.length+1;
+            const _newLineData0 = {
+                labels: labelArray.slice(start, end), datasets: [
+                    { label: "New Cases", backgroundColor: COLORS.green.border, borderColor: COLORS.green.border, data: caseIncrementArray.slice(start, end) },
+                    { label: "New Deaths", backgroundColor: COLORS.gray.border, borderColor: COLORS.gray.border, data: deathIncrementArray.slice(start, end) }
+                ]
+            };
+
+            refLineChart0.current.data = _newLineData0;
+            refLineChart0.current.update();
+
+
+
             refLineChart1.current.data = _newLineData;
             refLineChart2.current.data = _newLineData2;
             refLineChart1.current.update();
@@ -82,7 +76,7 @@ function Country() {
     }
 
     useEffect(() => {
-        fetchData("France");
+        fetchData("France",30);
     }, [])
 
     function changeCountry(e) {
