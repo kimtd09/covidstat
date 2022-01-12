@@ -1,0 +1,25 @@
+.search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 80px;
+    width: 100%;
+    background-color: $bg_medium;
+    
+    input {
+        width: 250px;
+        height: 25px;
+        text-align: center;
+    }
+}
+
+.country-chart-container {
+    display: flex;
+    flex-direction: column;
+    width: calc(100vw - var(--page-margin)*2);
+    margin-top: 50px;
+    gap: 50px;
+    box-sizing: border-box;
+}

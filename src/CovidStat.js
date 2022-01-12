@@ -3,6 +3,7 @@ import Chart from 'chart.js/auto';
 import axios from 'axios';
 import "./assets/css/style.css";
 import { useEffect, useRef, useState } from 'react';
+import Country from './components/Country';
 
 function CovidStat() {
     document.title = "COVID-19 Statistics";
@@ -23,30 +24,34 @@ function CovidStat() {
     const chartDeathRef = useRef(null);
 
     async function fetchData() {
-        const response = await axios.get(_url_global);
-        setGlobalData(() => response.data.Global);
-        setGlobalData((d) => { return { ...d, lethalrate: (response.data.Global.TotalDeaths / response.data.Global.TotalConfirmed).toFixed(3) + "%" } });
-        setDate(() => new Date(response.data.Date).toLocaleString());
+        try {
+            const response = await axios.get(_url_global);
+            setGlobalData(() => response.data.Global);
+            setGlobalData((d) => { return { ...d, lethalrate: (response.data.Global.TotalDeaths / response.data.Global.TotalConfirmed).toFixed(3) + "%" } });
+            setDate(() => new Date(response.data.Date).toLocaleString());
 
-        const labelArray = [];
-        const caseArray = [];
-        const deathArray = [];
+            const labelArray = [];
+            const caseArray = [];
+            const deathArray = [];
 
-        response.data.Countries.forEach((e) => {
-            labelArray.push(e.Country);
-            caseArray.push(e.TotalConfirmed);
-            deathArray.push(e.TotalDeaths);
-        })
+            response.data.Countries.forEach((e) => {
+                labelArray.push(e.Country);
+                caseArray.push(e.TotalConfirmed);
+                deathArray.push(e.TotalDeaths);
+            })
 
-        setCountriesData(() => { return { labels: labelArray, cases: caseArray, deaths: deathArray }; });
-        // console.log(response.data);
+            setCountriesData(() => { return { labels: labelArray, cases: caseArray, deaths: deathArray }; });
+            // console.log(response.data);
 
-        const _case = { labels: labelArray, datasets: [{ label: "Total Cases", backgroundColor: 'rgba(255, 99, 132, 0.5)', borderColor: 'rgb(255, 99, 132)', data: caseArray }] };
-        const _death = { labels: labelArray, datasets: [{ label: "Total Deaths", backgroundColor: 'rgba(153, 102, 255, 0.5)', borderColor: 'rgb(153, 102, 255)', data: deathArray }] };
-        chartCaseRef.current.data = _case;
-        chartDeathRef.current.data = _death;
-        chartCaseRef.current.update();
-        chartDeathRef.current.update();
+            const _case = { labels: labelArray, datasets: [{ label: "Total Cases", backgroundColor: 'rgba(255, 99, 132, 0.5)', borderColor: 'rgb(255, 99, 132)', data: caseArray }] };
+            const _death = { labels: labelArray, datasets: [{ label: "Total Deaths", backgroundColor: 'rgba(153, 102, 255, 0.5)', borderColor: 'rgb(153, 102, 255)', data: deathArray }] };
+            chartCaseRef.current.data = _case;
+            chartDeathRef.current.data = _death;
+            chartCaseRef.current.update();
+            chartDeathRef.current.update();
+        }catch(e) {
+            console.log(e);
+        }
     }
 
     useEffect(() => {
@@ -343,7 +348,7 @@ function CovidStat() {
                 </section>
             </div>
             <div className='' style={{ display: `${page === 2 ? "block" : "none"}` }}>
-                TODO
+                <Country />
             </div>
         </main>
         <footer>
