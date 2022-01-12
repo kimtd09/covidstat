@@ -1,0 +1,78 @@
+// <div className='test'>
+// <label for="drop-1">test</label>
+// <a class="atest">TEST</a>
+
+// <input type="checkbox" id="drop-1"/>
+// <div><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span>
+// </div></div>
+
+[id^="drop"] {
+    display: none;
+}
+
+label {
+    display: none;
+    width: 100%;
+}
+
+[id^="drop"]:checked {
+    & + div {
+        transform: scaleY(1);
+    }
+}
+
+.atest {
+    display: inline-block;
+    width: 100%;
+    &:hover {
+        & + div {
+            transform: scaleY(1);
+        }
+    }
+}
+
+.test {
+    position: relative;
+    // display: inline-block;
+    width: 100px;
+    background-color: tomato;
+    cursor: pointer;
+    text-align: center;
+
+    div {
+        transform: scaleY(0);
+        transition-duration: 0.3s;
+        transform-origin: top;
+        width: 100%;
+        z-index: 1;
+
+        span {
+            display: block;
+            background-color: wheat;
+            width: 100%;
+
+            &:hover {
+                background-color: whitesmoke;
+            }
+        }
+
+        position: absolute;
+    }
+
+    &:hover {
+        div {
+            transform: scaleY(1);
+        }
+    }
+}
+
+
+@media screen and (max-width: 480px) {
+    .atest {
+        display: none;
+    }
+
+    label {
+        display: inline-block;
+    }
+}

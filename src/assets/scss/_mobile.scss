@@ -11,4 +11,12 @@
         flex-direction: column;
         gap: 20px;
     }
+
+    .atest {
+        display: none;
+    }
+
+    label {
+        display: inline-block;
+    }
 }

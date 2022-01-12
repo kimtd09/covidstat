@@ -7,7 +7,7 @@ body {
     flex-direction: column;
     align-items: center;
     margin: 0 var(--page-margin);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Lato Regular";
 }
 
 header {
@@ -47,7 +47,7 @@ nav {
 }
 
 .page-selected {
-    border-bottom: 5px solid $nav_selected;
+    border-bottom: 3px solid $nav_selected;
 }
 
 .page {
@@ -81,8 +81,10 @@ nav {
 .chart-toprow {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    height: 100px;
 
-    h2 {
+    h3 {
         margin: 0;
     }
 }
@@ -95,14 +97,13 @@ nav {
 button {
     cursor: pointer;
     border: none;
-    outline: none;
-    border: 1px solid $bg_dark;
     padding: 5px 5px;
     height: 30px;
     width: 110px;
     box-sizing: border-box;
     background-color: white;
-    border: 1px solid silver;
+    font-family: "Lato Regular";
+    font-size: 12px;
 
     &:hover {
         background-color: $bg_dark;
@@ -119,6 +120,7 @@ button {
     height: 30px;
     background-color: white;
     border: 1px silver solid;
+    box-sizing: border-box;
 
     div:nth-child(1) {
         display: flex;
@@ -135,19 +137,29 @@ button {
                 fill: gray;
             }
         }
+
+        span {
+            font-size: 10px;
+            text-transform: uppercase;
+        }
     }
 
     cursor: pointer;
 
     div:nth-child(2) {
         position: absolute;
-        left: 0;
+        left: 0px;
         bottom: -90px;
         display: flex;
         flex-direction: column;
         overflow: hidden;
         transition-duration: 0.2s;
         transform-origin: top;
+        box-sizing: border-box;
+        border: 1px silver solid;
+        background-color: silver;
+        gap: 1px;
+        width: 110px;
     }
 }
 
@@ -169,21 +181,23 @@ button {
 .case {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     background-color: $bg_medium;
     border: 2px solid $bg_dark;
     border-radius: 10px;
-    padding: 10px;
-    width: 200px;
+    padding: 5px;
+    height: 55px;
+    width: 180px;
     gap: 5px;
     box-sizing: border-box;
 
     div:nth-child(1) {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     div:nth-child(2) {
-        font-size: 22px;
+        font-size: 18px;
     }
 }
 
@@ -232,10 +246,6 @@ button {
 }
 
 .chart-container {
-    h2 {
-        text-align: center;
-    }
-
     hr {
         border-top: none;
         width: 90%;

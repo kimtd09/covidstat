@@ -245,10 +245,10 @@ function CovidStat() {
         </header>
         <main>
             <nav><ul>
-                <li className={page === 1 ? "page-selected" : ""} onClick={()=> setPage(()=> 1)}>Worldwide</li>
-                <li className={page === 2 ? "page-selected" : ""} onClick={()=> setPage(()=> 2)}>Per Country</li>
+                <li className={page === 1 ? "page-selected" : ""} onClick={() => setPage(() => 1)}>Worldwide</li>
+                <li className={page === 2 ? "page-selected" : ""} onClick={() => setPage(() => 2)}>Per Country</li>
             </ul></nav>
-            <div className='page' style={{display : `${page===1 ? "flex" : "none"}`}}>
+            <div className='page' style={{ display: `${page === 1 ? "flex" : "none"}` }}>
                 <section className='global'>
                     <div className="global-container">
                         <span>last updated: {date}</span>
@@ -277,7 +277,7 @@ function CovidStat() {
 
                 <section className='chart-section'>
                     <div className='chart-toprow'>
-                        <h2>COVID-19 Total Cases</h2>
+                        <h3>COVID-19 Total Cases</h3>
                         <div className='chart-buttons'>
                             <div className='chart-button' onClick={() => showFilters(setFilter1, setFilter2)}>
                                 <div>
@@ -311,7 +311,7 @@ function CovidStat() {
 
                 <section className='chart-section'>
                     <div className='chart-toprow'>
-                        <h2>COVID-19 Total Deaths</h2>
+                        <h3>COVID-19 Total Deaths</h3>
                         <div className='chart-buttons'>
                             <div className='chart-button' onClick={() => showFilters(setFilter3, setFilter4)}>
                                 <div>
@@ -335,7 +335,6 @@ function CovidStat() {
                             </div>
                         </div>
                     </div>
-                    <hr />
                     <div className='chart-container'>
                         <div className='chart-subcontainer'>
                             <Bar data={data} options={options} ref={chartDeathRef} />
@@ -343,7 +342,7 @@ function CovidStat() {
                     </div>
                 </section>
             </div>
-            <div className='' style={{display : `${page===2 ? "block" : "none"}`}}>
+            <div className='' style={{ display: `${page === 2 ? "block" : "none"}` }}>
                 TODO
             </div>
         </main>

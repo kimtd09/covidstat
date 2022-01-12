@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "Lato Regular";
+  src: url("../fonts/Lato-Regular.ttf");
+}
+
 :root {
   --page-margin: 50px;
 }
@@ -14,7 +19,7 @@ body {
       -ms-flex-align: center;
           align-items: center;
   margin: 0 var(--page-margin);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Lato Regular";
 }
 
 header {
@@ -60,7 +65,7 @@ nav li {
 }
 
 .page-selected {
-  border-bottom: 5px solid #1e47ff;
+  border-bottom: 3px solid #2e86de;
 }
 
 .page {
@@ -109,9 +114,13 @@ nav li {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100px;
 }
 
-.chart-toprow h2 {
+.chart-toprow h3 {
   margin: 0;
 }
 
@@ -125,15 +134,14 @@ nav li {
 button {
   cursor: pointer;
   border: none;
-  outline: none;
-  border: 1px solid #e4e7ec;
   padding: 5px 5px;
   height: 30px;
   width: 110px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   background-color: white;
-  border: 1px solid silver;
+  font-family: "Lato Regular";
+  font-size: 12px;
 }
 
 button:hover {
@@ -159,6 +167,8 @@ button:hover {
   height: 30px;
   background-color: white;
   border: 1px silver solid;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   cursor: pointer;
 }
 
@@ -186,9 +196,14 @@ button:hover {
   fill: gray;
 }
 
+.chart-button div:nth-child(1) span {
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
 .chart-button div:nth-child(2) {
   position: absolute;
-  left: 0;
+  left: 0px;
   bottom: -90px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -202,6 +217,12 @@ button:hover {
           transition-duration: 0.2s;
   -webkit-transform-origin: top;
           transform-origin: top;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 1px silver solid;
+  background-color: silver;
+  gap: 1px;
+  width: 110px;
 }
 
 .chart-container {
@@ -230,25 +251,29 @@ button:hover {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
   background-color: #f0f1f5;
   border: 2px solid #e4e7ec;
   border-radius: 10px;
-  padding: 10px;
-  width: 200px;
+  padding: 5px;
+  height: 55px;
+  width: 180px;
   gap: 5px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
 
 .case div:nth-child(1) {
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .case div:nth-child(2) {
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .daily .case div:nth-child(1) {
@@ -256,7 +281,7 @@ button:hover {
 }
 
 .total .case div:nth-child(1) {
-  color: #2a7e11;
+  color: #0f775d;
 }
 
 .case-container {
@@ -302,10 +327,6 @@ button:hover {
   margin-bottom: 25px;
 }
 
-.chart-container h2 {
-  text-align: center;
-}
-
 .chart-container hr {
   border-top: none;
   width: 90%;
@@ -347,6 +368,12 @@ footer {
         -ms-flex-direction: column;
             flex-direction: column;
     gap: 20px;
+  }
+  .atest {
+    display: none;
+  }
+  label {
+    display: inline-block;
   }
 }
 /*# sourceMappingURL=style.css.map */
