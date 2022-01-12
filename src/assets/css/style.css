@@ -439,20 +439,27 @@ footer {
   gap: 50px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  overflow: hidden;
 }
 
 .country-filters {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   margin: 0;
   padding: 0;
   list-style: none;
   gap: 5px;
   border-bottom: 1px solid #e4e7ec;
+}
+
+.country-filters div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .country-filters li {
@@ -480,5 +487,64 @@ form button {
   width: 50px;
   background-color: white;
   border: 1px solid gray;
+}
+
+.country-summary {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  background-color: rgba(30, 143, 255, 0.2);
+  border-radius: 7px;
+  padding: 20px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.country-summary div:nth-child(1) {
+  height: 50px;
+  width: 75px;
+}
+
+.country-summary div:nth-child(1) img {
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.summary-case {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100px;
+  height: 50px;
+  gap: 3px;
+  background-color: #f9fafb;
+  border-radius: 3px;
+}
+
+.summary-case span:nth-child(1) {
+  font-size: 12px;
+  text-transform: lowercase;
 }
 /*# sourceMappingURL=style.css.map */
