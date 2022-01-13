@@ -645,4 +645,17 @@ form button {
     color: #f0f1f5;
   }
 }
+
+.compare-titles {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 5px;
+}
+
+.compare-titles span {
+  background-color: rgba(30, 143, 255, 0.17);
+  padding: 5px 10px;
+  border-radius: 10px;
+}
 /*# sourceMappingURL=style.css.map */

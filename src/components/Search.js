@@ -4,7 +4,7 @@ function Search(args) {
 
     function suggest(e) {
         args.resetCallback();
-        const span = document.querySelector(".search-container span");
+        const span = document.getElementById(args.id);
 
         if (e.target.value.length > 2) {
             span.innerHTML = "<span>suggestions:</span>";
@@ -22,11 +22,11 @@ function Search(args) {
 
     return <>
         <section className="search-container">
-            <form method="post" onSubmit={args.submitCallback} onReset={args.resetCallback}>
+            <form id={"form"+args.id} method="post" onSubmit={args.submitCallback} onReset={args.resetCallback}>
                 <input placeholder="search country" onChange={suggest}></input><button type="submit">OK</button><button type="reset">X</button>
             </form>
             <div className="api_result">{args.apiresult}</div>
-            <span></span>
+            <span id={args.id}></span>
         </section>
     </>
 }

@@ -4,13 +4,14 @@ import { Line } from "react-chartjs-2";
 import { COLORS } from "../assets/data/colors";
 import { countriesList } from "../assets/data/countries";
 import loadingSVG from "../assets/svg/loading.svg";
+import { formatDate, _loadingSVG } from "../tools";
 import Search from "./Search";
 
 function Country() {
 
     const [country, setCountry] = useState("France");
     const [days, setDays] = useState("30");
-    const [data, setData] = useState({ labels: ["J", "F"], datasets: [{ label: "a", backgroundColor: COLORS.yellow.border, borderColor: COLORS.yellow.border, data: [1, 2] }] });
+    const [data, setData] = useState({ labels: ["J"], datasets: [{ label: "a", backgroundColor: COLORS.yellow.border, borderColor: COLORS.yellow.border, data: [1] }] });
     const [scale, setScale] = useState(1);
     const [loading, setLoading] = useState(false);
     const [apiresult, setApiResult] = useState("");
@@ -152,7 +153,7 @@ function Country() {
         try {
             const response = await axios.get(_url2);
             setCountry(_country);
-            document.querySelector("form").reset();
+            document.getElementById("form1").reset();
             setDays(() => _days);
             const labelArray = Object.keys(response.data.timeline.cases);
             const caseArray = Object.values(response.data.timeline.cases);
@@ -206,37 +207,13 @@ function Country() {
             setApiResult(() => _country + ": country not found");
         }
     }
-    const _loadingSVG = `<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-    width="26.349px" height="26.35px" viewBox="0 0 26.349 26.35" style="enable-background:new 0 0 26.349 26.35;"
-    xml:space="preserve">
-<g>
-   <g>
-       <circle cx="13.792" cy="3.082" r="3.082"/>
-       <circle cx="13.792" cy="24.501" r="1.849"/>
-       <circle cx="6.219" cy="6.218" r="2.774"/>
-       <circle cx="21.365" cy="21.363" r="1.541"/>
-       <circle cx="3.082" cy="13.792" r="2.465"/>
-       <circle cx="24.501" cy="13.791" r="1.232"/>
-       <path d="M4.694,19.84c-0.843,0.843-0.843,2.207,0,3.05c0.842,0.843,2.208,0.843,3.05,0c0.843-0.843,0.843-2.207,0-3.05
-           C6.902,18.996,5.537,18.988,4.694,19.84z"/>
-       <circle cx="21.364" cy="6.218" r="0.924"/>
-   </g>
-</g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
-</svg>`;
 
     useEffect(() => {
         fetchData("France", "30");
-
-
         document.querySelector(".loading-svg").innerHTML = _loadingSVG;
     }, [])
 
-    function formatDate(s) {
-        const date = new Date(s);
-        const options = { month: 'short' };
-        const newDate = (date.getDate()) + "-" + (new Intl.DateTimeFormat('en-US', options).format(date)) + "-" + date.getFullYear();
-        return newDate;
-    }
+
 
     function changeCountry(e) {
         e.preventDefault();
@@ -259,7 +236,7 @@ function Country() {
 
     function resetSuggestions() {
         setApiResult(() => "");
-        const span = document.querySelector(".search-container span");
+        const span = document.getElementById("1");
         while (span.firstChild) { span.removeChild(span.firstChild); }
     }
 
@@ -271,7 +248,7 @@ function Country() {
     }
 
     return <>
-        <Search submitCallback={changeCountry} resetCallback={resetSuggestions} suggestionSubmit={suggestionSubmit} apiresult={apiresult} />
+        <Search submitCallback={changeCountry} resetCallback={resetSuggestions} suggestionSubmit={suggestionSubmit} apiresult={apiresult} id="1"/>
 
         <div className="country-title">
             <h2>{country}</h2>
