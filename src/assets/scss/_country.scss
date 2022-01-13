@@ -136,11 +136,6 @@ form {
     }
 }
 
-// .scale2 {
-//     width: 8000px;
-//     height: 60vh;
-// }
-
 .country-title {
     display: flex;
     justify-content: space-between;
@@ -160,7 +155,6 @@ form {
         div {
             width: 24px;
             height: 24px;
-            
 
             svg {
                 width: 100%;
@@ -175,5 +169,11 @@ form {
 
 .stop-loading {
     opacity: 0;
-    animation: none;
+    span {
+        animation: none !important;
+    }
+
+    svg {
+        animation: none !important;
+    }
 }

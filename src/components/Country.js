@@ -4,7 +4,7 @@ import { Line } from "react-chartjs-2";
 import { COLORS } from "../assets/data/colors";
 import { countriesList } from "../assets/data/countries";
 import loadingSVG from "../assets/svg/loading.svg";
-import { formatDate, _loadingSVG } from "../tools";
+import { formatDate, options_all, options_default, _loadingSVG } from "../tools";
 import Search from "./Search";
 
 function Country() {
@@ -15,38 +15,11 @@ function Country() {
     const [scale, setScale] = useState(1);
     const [loading, setLoading] = useState(false);
     const [apiresult, setApiResult] = useState("");
-    // const [ratio, setRatio] = useState({maintainAspectRatio: true});
+    const [options, setOptions] = useState(options_default);
 
     const refLineChart0 = useRef(null);
     const refLineChart1 = useRef(null);
     const refLineChart2 = useRef(null);
-
-    const options_all = {
-        resizeDelay: 200,
-        animation: false,
-        elements: {
-            point: {
-                radius: 0.5,
-            },
-            line: {
-                borderWidth: 1,
-            }
-        }
-    };
-
-    const options_default = {
-        elements: {
-            point: {
-                radius: 2,
-            },
-            line: {
-                borderWidth: 2,
-            }
-        }
-    };
-
-    const [options, setOptions] = useState(options_default);
-
 
     function fetchData(c, d) {
         // for perf measurement
@@ -285,7 +258,7 @@ function Country() {
                     <li className={days === "30" ? "li-selected" : ""} onClick={() => { changeDays("30") }}>last 30 days</li>
                 </div>
             </ul>
-            <div><div className={scale === 2 ? "scale2" : ""}><Line data={data} options={options} ref={refLineChart0} /></div></div>
+            <Line data={data} options={options} ref={refLineChart0} />
             <Line data={data} options={options} ref={refLineChart1} />
             <Line data={data} options={options} ref={refLineChart2} />
         </div>

@@ -596,8 +596,16 @@ form button {
 
 .stop-loading {
   opacity: 0;
-  -webkit-animation: none;
-          animation: none;
+}
+
+.stop-loading span {
+  -webkit-animation: none !important;
+          animation: none !important;
+}
+
+.stop-loading svg {
+  -webkit-animation: none !important;
+          animation: none !important;
 }
 
 @-webkit-keyframes rotate {
@@ -651,11 +659,16 @@ form button {
   display: -ms-flexbox;
   display: flex;
   gap: 5px;
+  cursor: pointer;
 }
 
 .compare-titles span {
   background-color: rgba(30, 143, 255, 0.17);
   padding: 5px 10px;
   border-radius: 10px;
+}
+
+.capitalize {
+  text-transform: uppercase;
 }
 /*# sourceMappingURL=style.css.map */

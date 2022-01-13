@@ -23,4 +23,40 @@ xml:space="preserve">
 </g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
 </svg>`;
 
-export {formatDate, _loadingSVG};
+const options_all = {
+    resizeDelay: 200,
+    animation: false,
+    elements: {
+        point: {
+            radius: 0.5,
+        },
+        line: {
+            borderWidth: 1,
+        }
+    }
+};
+
+const options_default = {
+    elements: {
+        point: {
+            radius: 2,
+        },
+        line: {
+            borderWidth: 2,
+        }
+    }
+};
+
+function capitalize(s) {
+    if(s.length <= 3) {
+        return s.toUpperCase();
+    }
+
+    return capitalizeFirstLetter(s);
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+export {formatDate, _loadingSVG, options_all, options_default, capitalize};

@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { COLORS } from "../assets/data/colors";
-import { formatDate, _loadingSVG } from "../tools";
+import { capitalize, formatDate, options_default, _loadingSVG } from "../tools";
 import Search from "./Search";
 
 function Compare() {
@@ -15,17 +15,25 @@ function Compare() {
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const [usedColor, setUsedColors] = useState([]);
+    const [options, setOptions] = useState(options_default);
 
     const refLineChart = useRef();
 
+    useEffect(() => {
+        document.querySelectorAll(".loading-svg")[1].innerHTML = _loadingSVG;
+    }, [])
+
     async function fetchDataAPI(c, d) {
         const _url = `https://disease.sh/v3/covid-19/historical/${c}?lastdays=${d}`;
+        console.log(c);
 
         try {
-            if (!country.includes(c.toLowerCase())) {
-                const response = await axios.get(_url);
+            const response = await axios.get(_url);
+
+            if (!country.includes(response.data.country.toLowerCase())) {
 
                 country.push(response.data.country.toLowerCase());
+                console.log(country);
 
                 document.getElementById("form2").reset();
                 setDays(() => d);
@@ -38,7 +46,7 @@ function Compare() {
                     labelArray[i] = formatDate(e);
                 });
 
-                const name = response.data.country.toLowerCase();
+                const name = capitalize(response.data.country);
                 const obj = { name: name };
 
                 const color = getColor();
@@ -99,6 +107,8 @@ function Compare() {
         } catch (e) {
             console.log(e);
             setApiResult(() => c + ": country not found");
+        } finally {
+            setLoading(() => false);
         }
 
     }
@@ -110,8 +120,8 @@ function Compare() {
             return colors[0];
         }
         else {
-            for(let i=0; i<colors.length; i++) {
-                if(!usedColor.includes(colors[i])) {
+            for (let i = 0; i < colors.length; i++) {
+                if (!usedColor.includes(colors[i])) {
                     usedColor.push(colors[i]);
                     return colors[i];
                 }
@@ -122,6 +132,7 @@ function Compare() {
     }
 
     function fetchData(c, d) {
+        setLoading(() => true);
         fetchDataAPI(c, d);
     }
 
@@ -155,9 +166,6 @@ function Compare() {
     }
 
     function removeData(e) {
-
-
-
         country.forEach((element, i) => {
             if (element.toLowerCase() === e.target.innerText.toLowerCase()) {
                 country.splice(i, 1)
@@ -175,7 +183,7 @@ function Compare() {
 
         refLineChart.current.data.datasets.forEach((element, i) => {
             if (element.label.toLowerCase() === e.target.innerText.toLowerCase()) {
-                usedColor.splice(i,1);
+                usedColor.splice(i, 1);
                 refLineChart.current.data.datasets.splice(i, 1);
                 return;
             }
@@ -185,18 +193,17 @@ function Compare() {
     }
 
     return <div>
-        <Search submitCallback={addCountry} resetCallback={resetSuggestions} suggestionSubmit={suggestionSubmit} apiresult={apiresult} id="2" />
-        <div className="debug">
+        <Search submitCallback={addCountry} resetCallback={resetSuggestions} suggestionSubmit={suggestionSubmit} apiresult={apiresult} id="2" key="2" />
+        {/* <div className="debug">
             {countryData.length}
-        </div>
+        </div> */}
         <div className="country-title">
-            <h2 className="compare-titles" data-refresh={refresh}>{countryData.map(e => {
-                return <span onClick={removeData}>{e.name}</span>;
+            <h2 className="compare-titles" data-refresh={refresh}>{countryData.map((e, i) => {
+                return <span className={e.name.length <= 3 ? "capitalize" : ""} onClick={removeData} key={i}>{e.name}</span>;
             })}</h2>
             <div className={loading ? "" : "stop-loading"}>
                 <span>loading data</span>
                 <div className="loading-svg">
-                    {_loadingSVG}
                 </div>
             </div>
         </div>
@@ -210,7 +217,7 @@ function Compare() {
                     <li className={days === "30" ? "li-selected" : ""} onClick={() => { changeDays("30") }}>last 30 days</li>
                 </div>
             </ul>
-            <Line data={data} ref={refLineChart} />
+            <Line data={data} options={options} ref={refLineChart} />
         </div>
     </div>
 }

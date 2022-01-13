@@ -1,10 +1,15 @@
 .compare-titles {
     display: flex;
     gap: 5px;
+    cursor: pointer;
 
     span {
         background-color: $bg_summary;
         padding: 5px 10px;
         border-radius: 10px;
     }
+}
+
+.capitalize {
+    text-transform: uppercase;
 }
