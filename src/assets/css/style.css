@@ -507,7 +507,7 @@ form button {
   gap: 10px;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  background-color: rgba(30, 143, 255, 0.2);
+  background-color: rgba(30, 143, 255, 0.17);
   border-radius: 7px;
   padding: 20px;
   -webkit-box-sizing: border-box;

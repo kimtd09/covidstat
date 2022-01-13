@@ -49,7 +49,7 @@ function CovidStat() {
             chartDeathRef.current.data = _death;
             chartCaseRef.current.update();
             chartDeathRef.current.update();
-        }catch(e) {
+        } catch (e) {
             console.log(e);
         }
     }
@@ -174,7 +174,8 @@ function CovidStat() {
         });
 
         let sortedArrayOfObj = arrayOfObj.sort(function (a, b) {
-            return b.data > a.data;
+            if (b.data > a.data) { return 1; }
+            return -1;
         });
 
         let newArrayLabel = [];
