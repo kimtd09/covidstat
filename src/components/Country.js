@@ -247,6 +247,8 @@ function Country() {
 
         </section>
 
+
+        <div className="country-chart-container">
         <ul className="country-filters">
             <div>
                 {/* <li className={scale === 1 ? "li-selected" : ""} onClick={() => changeScale(1)}>1x</li>
@@ -258,7 +260,6 @@ function Country() {
                 <li className={days === "30" ? "li-selected" : ""} onClick={() => { changeDays("30") }}>last 30 days</li>
             </div>
         </ul>
-        <div className="country-chart-container">
             <div><div className={scale === 2 ? "scale2" : ""}><Line data={data} ref={refLineChart0} /></div></div>
             <Line data={data} ref={refLineChart1} />
             <Line data={data} ref={refLineChart2} />
