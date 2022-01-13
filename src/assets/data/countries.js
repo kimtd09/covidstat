@@ -234,7 +234,7 @@ export const countriesList = [
         "ISO2": "ZA"
     },
     {
-        "Country": "Taiwan, Republic of China",
+        "Country": "Taiwan",
         "Slug": "taiwan",
         "ISO2": "TW"
     },

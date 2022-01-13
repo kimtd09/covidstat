@@ -14,7 +14,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 
     div {
         width: 30px;
@@ -29,7 +29,7 @@ header {
 nav {
     ul {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         width: calc(100vw - var(--page-margin) * 2);
         text-align: center;
         list-style: none;

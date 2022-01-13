@@ -32,7 +32,7 @@ header {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 header div {
@@ -47,8 +47,8 @@ header div svg {
 nav ul {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 1fr 1fr;
-      grid-template-columns: 1fr 1fr;
+  -ms-grid-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
   width: calc(100vw - var(--page-margin) * 2);
   text-align: center;
   list-style: none;

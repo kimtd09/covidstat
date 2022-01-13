@@ -4,6 +4,7 @@ import axios from 'axios';
 import "./assets/css/style.css";
 import { useEffect, useRef, useState } from 'react';
 import Country from './components/Country';
+import Compare from './components/Compare';
 
 function CovidStat() {
     document.title = "COVID-19 Statistics";
@@ -253,6 +254,7 @@ function CovidStat() {
             <nav><ul>
                 <li className={page === 1 ? "page-selected" : ""} onClick={() => setPage(() => 1)}>Worldwide</li>
                 <li className={page === 2 ? "page-selected" : ""} onClick={() => setPage(() => 2)}>Per Country</li>
+                <li className={page === 3 ? "page-selected" : ""} onClick={() => setPage(() => 3)}>Compare</li>
             </ul></nav>
             <div className='page' style={{ display: `${page === 1 ? "flex" : "none"}` }}>
                 <section className='global'>
@@ -351,6 +353,10 @@ function CovidStat() {
             <div className='' style={{ display: `${page === 2 ? "block" : "none"}` }}>
                 <Country />
             </div>
+            <div className='' style={{ display: `${page === 3 ? "block" : "none"}` }}>
+                <Compare />
+            </div>
+
         </main>
         <footer>
         </footer>

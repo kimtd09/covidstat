@@ -4,15 +4,16 @@ import { Line } from "react-chartjs-2";
 import { COLORS } from "../assets/data/colors";
 import { countriesList } from "../assets/data/countries";
 import loadingSVG from "../assets/svg/loading.svg";
+import Search from "./Search";
 
 function Country() {
 
     const [country, setCountry] = useState("France");
     const [days, setDays] = useState("30");
-    const [apiresult, setApiResult] = useState("");
     const [data, setData] = useState({ labels: ["J", "F"], datasets: [{ label: "a", backgroundColor: COLORS.yellow.border, borderColor: COLORS.yellow.border, data: [1, 2] }] });
     const [scale, setScale] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [apiresult, setApiResult] = useState("");
     // const [ratio, setRatio] = useState({maintainAspectRatio: true});
 
     const refLineChart0 = useRef(null);
@@ -20,6 +21,8 @@ function Country() {
     const refLineChart2 = useRef(null);
 
     const options_all = {
+        resizeDelay: 200,
+        animation: false,
         elements: {
             point: {
                 radius: 0.5,
@@ -45,16 +48,15 @@ function Country() {
 
 
     function fetchData(c, d) {
-        var start = performance.now();
+        // for perf measurement
+        // var start = performance.now();
         setLoading(() => true);
         fetchDataAPI2(c, d).then(() => {
             setLoading(() => false);
-            var end = performance.now();
-            var timeTaken = end - start;
-            console.log(timeTaken);
-        }
-                        
-        );
+            // var end = performance.now();
+            // var timeTaken = end - start;
+            // console.log(timeTaken);
+        });
     }
 
     async function fetchDataAPI1(_country, _days) {
@@ -239,6 +241,7 @@ function Country() {
     function changeCountry(e) {
         e.preventDefault();
         setApiResult(() => "");
+        resetSuggestions();
         if (e.target.firstChild.value.length > 0) {
             fetchData(e.target.firstChild.value, "30");
         }
@@ -260,57 +263,21 @@ function Country() {
         while (span.firstChild) { span.removeChild(span.firstChild); }
     }
 
-    function suggest(e) {
-        resetSuggestions();
-        const span = document.querySelector(".search-container span");
-
-        if (e.target.value.length > 2) {
-            span.innerHTML = "<span>suggestions:</span>";
-            countriesList.forEach(c => {
-                if (c.Country.toLowerCase().startsWith(e.target.value.toLowerCase())) {
-                    const b = document.createElement("button");
-                    b.value = c.Country;
-                    b.innerText = c.Country;
-                    b.onclick = suggestionSubmit;
-                    span.appendChild(b);
-                }
-            })
-        }
-    }
-
     function suggestionSubmit() {
         // console.log(this.value);
         resetSuggestions();
+        setOptions(() => options_default);
         fetchData(this.value, "30");
     }
 
-    // function changeScale(x) {
-    //     setScale(() => x);
-    //     let bool=false;
-
-    //     if( x === 1 ) {
-    //         bool = true;
-    //     }
-    //     setRatio(() => {return { maintainAspectRatio: bool}} );
-    // }
-
-
-
     return <>
-        <section className="search-container">
-            <form method="post" onSubmit={changeCountry} onReset={resetSuggestions}>
-                <input placeholder="search country" onChange={suggest}></input><button type="submit">OK</button><button type="reset">X</button>
-            </form>
-            <div className="api_result">{apiresult}</div>
-            <span></span>
-        </section>
+        <Search submitCallback={changeCountry} resetCallback={resetSuggestions} suggestionSubmit={suggestionSubmit} apiresult={apiresult} />
 
         <div className="country-title">
             <h2>{country}</h2>
             <div className={loading ? "" : "stop-loading"}>
                 <span>loading data</span>
                 <div className="loading-svg">
-                    {/* <img src={loadingSVG} alt="loading"></img> */}
                     {_loadingSVG}
                 </div>
             </div>
@@ -334,8 +301,6 @@ function Country() {
         <div className="country-chart-container">
             <ul className="country-filters">
                 <div>
-                    {/* <li className={scale === 1 ? "li-selected" : ""} onClick={() => changeScale(1)}>1x</li>
-                <li className={scale === 2 ? "li-selected" : ""} onClick={() => changeScale(2)}>2x</li> */}
                 </div>
                 <div>
                     <li className={days === "all" ? "li-selected" : ""} onClick={() => { changeDays("all") }}>all</li>
