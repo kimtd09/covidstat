@@ -145,6 +145,10 @@ function Country() {
             const caseArray = Object.values(response.data.timeline.cases);
             const deathArray = Object.values(response.data.timeline.deaths);
 
+            labelArray.forEach((e, i) => {
+                labelArray[i] = formatDate(e);
+            })
+
             const _newLineData1 = {
                 labels: labelArray, datasets: [
                     { label: "Total Cases", backgroundColor: COLORS.yellow.border, borderColor: COLORS.yellow.border, data: caseArray }
@@ -194,6 +198,13 @@ function Country() {
         fetchData("France", "30");
     }, [])
 
+    function formatDate(s) {
+        const date = new Date(s);
+        const options = { month: 'short'};
+        const newDate = (date.getUTCDate()) + "-" + (new Intl.DateTimeFormat('en-US', options).format(date)) + "-" + date.getFullYear();
+        return newDate;
+    }
+
     function changeCountry(e) {
         e.preventDefault();
         setApiResult(() => "");
@@ -208,7 +219,7 @@ function Country() {
         } else {
             setOptions(() => options_default);
         }
-        
+
         fetchData(country, _days);
     }
 
