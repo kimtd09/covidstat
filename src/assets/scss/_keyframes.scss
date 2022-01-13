@@ -1,0 +1,24 @@
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes colorize {
+    0% {
+        color: $bg_medium;
+    }
+
+    50% {
+        color: black;
+    }
+
+    100% {
+        color: $bg_medium;
+    }
+    
+}
