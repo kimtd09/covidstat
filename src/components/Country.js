@@ -13,10 +13,34 @@ function Country() {
     const [scale, setScale] = useState(1);
     // const [ratio, setRatio] = useState({maintainAspectRatio: true});
 
-
     const refLineChart0 = useRef(null);
     const refLineChart1 = useRef(null);
     const refLineChart2 = useRef(null);
+
+    const options_all = {
+        elements: {
+            point: {
+                radius: 0.5,
+            },
+            line: {
+                borderWidth: 1,
+            }
+        }
+    };
+
+    const options_default = {
+        elements: {
+            point: {
+                radius: 2,
+            },
+            line: {
+                borderWidth: 2,
+            }
+        }
+    };
+
+    const [options, setOptions] = useState(options_default);
+
 
     function fetchData(c, d) {
         fetchDataAPI2(c, d);
@@ -104,7 +128,7 @@ function Country() {
             <div class="summary-case"><span>deaths</span><span>${d.deaths.toLocaleString()}</span></div>
             <div class="summary-case"><span>recovered</span><span>${d.recovered.toLocaleString()}</span></div>
             <div class="summary-case"><span>tests</span><span>${d.tests.toLocaleString()}</span></div>
-            <div class="summary-case"><span>lethality rate</span><span>${(d.deaths/d.cases).toFixed(3)+"%"}</span></div>
+            <div class="summary-case"><span>lethality rate</span><span>${(d.deaths / d.cases).toFixed(3) + "%"}</span></div>
             `;
 
         } catch (e) {
@@ -121,7 +145,7 @@ function Country() {
             const caseArray = Object.values(response.data.timeline.cases);
             const deathArray = Object.values(response.data.timeline.deaths);
 
-            const _newLineData = {
+            const _newLineData1 = {
                 labels: labelArray, datasets: [
                     { label: "Total Cases", backgroundColor: COLORS.yellow.border, borderColor: COLORS.yellow.border, data: caseArray }
                 ]
@@ -155,7 +179,7 @@ function Country() {
             };
 
             refLineChart0.current.data = _newLineData0;
-            refLineChart1.current.data = _newLineData;
+            refLineChart1.current.data = _newLineData1;
             refLineChart2.current.data = _newLineData2;
             refLineChart0.current.update();
             refLineChart1.current.update();
@@ -179,6 +203,12 @@ function Country() {
     }
 
     function changeDays(_days) {
+        if (_days === "all") {
+            setOptions(() => options_all);
+        } else {
+            setOptions(() => options_default);
+        }
+        
         fetchData(country, _days);
     }
 
@@ -249,20 +279,20 @@ function Country() {
 
 
         <div className="country-chart-container">
-        <ul className="country-filters">
-            <div>
-                {/* <li className={scale === 1 ? "li-selected" : ""} onClick={() => changeScale(1)}>1x</li>
+            <ul className="country-filters">
+                <div>
+                    {/* <li className={scale === 1 ? "li-selected" : ""} onClick={() => changeScale(1)}>1x</li>
                 <li className={scale === 2 ? "li-selected" : ""} onClick={() => changeScale(2)}>2x</li> */}
-            </div>
-            <div>
-                <li className={days === "all" ? "li-selected" : ""} onClick={() => { changeDays("all") }}>all</li>
-                <li className={days === "90" ? "li-selected" : ""} onClick={() => { changeDays("90") }}>last 3 months</li>
-                <li className={days === "30" ? "li-selected" : ""} onClick={() => { changeDays("30") }}>last 30 days</li>
-            </div>
-        </ul>
-            <div><div className={scale === 2 ? "scale2" : ""}><Line data={data} ref={refLineChart0} /></div></div>
-            <Line data={data} ref={refLineChart1} />
-            <Line data={data} ref={refLineChart2} />
+                </div>
+                <div>
+                    <li className={days === "all" ? "li-selected" : ""} onClick={() => { changeDays("all") }}>all</li>
+                    <li className={days === "90" ? "li-selected" : ""} onClick={() => { changeDays("90") }}>last 3 months</li>
+                    <li className={days === "30" ? "li-selected" : ""} onClick={() => { changeDays("30") }}>last 30 days</li>
+                </div>
+            </ul>
+            <div><div className={scale === 2 ? "scale2" : ""}><Line data={data} options={options} ref={refLineChart0} /></div></div>
+            <Line data={data} options={options} ref={refLineChart1} />
+            <Line data={data} options={options} ref={refLineChart2} />
         </div>
     </>
 }
