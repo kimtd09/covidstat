@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { COLORS } from "../assets/data/colors";
-import { capitalize, formatDate, options_default, _loadingSVG } from "../tools";
+import { capitalize, formatDate, options_all, options_default, _loadingSVG } from "../tools";
 import Search from "./Search";
 
 function Compare() {
@@ -16,6 +16,7 @@ function Compare() {
     const [refresh, setRefresh] = useState(false);
     const [usedColor, setUsedColors] = useState([]);
     const [options, setOptions] = useState(options_default);
+    const [dataType, setDataType] = useState("Cases");
 
     const refLineChart = useRef();
 
@@ -25,18 +26,13 @@ function Compare() {
 
     async function fetchDataAPI(c, d) {
         const _url = `https://disease.sh/v3/covid-19/historical/${c}?lastdays=${d}`;
-        console.log(c);
 
         try {
             const response = await axios.get(_url);
 
             if (!country.includes(response.data.country.toLowerCase())) {
 
-                country.push(response.data.country.toLowerCase());
-                console.log(country);
-
                 document.getElementById("form2").reset();
-                setDays(() => d);
 
                 const labelArray = Object.keys(response.data.timeline.cases);
                 const caseArray = Object.values(response.data.timeline.cases);
@@ -50,7 +46,6 @@ function Compare() {
                 const obj = { name: name };
 
                 const color = getColor();
-
                 obj.color = color;
 
                 obj.cases = {
@@ -92,13 +87,38 @@ function Compare() {
                     ]
                 };
 
+                country.push(response.data.country.toLowerCase());
                 countryData.push(obj);
+                setDays(() => d);
 
                 if (countryData.length === 1) {
-                    refLineChart.current.data = obj.deaths;
+                    if (dataType === "Cases") {
+                        refLineChart.current.data = obj.cases;
+                    }
+                    else if (dataType === "Deaths") {
+                        refLineChart.current.data = obj.deaths;
+                    }
+                    else if (dataType === "New Cases") {
+                        refLineChart.current.data = obj.newCases;
+                    }
+                    else if (dataType === "New Deaths") {
+                        refLineChart.current.data = obj.newDeaths;
+                    }
                 }
                 else {
-                    refLineChart.current.data.datasets.push(obj.deaths.datasets[0]);
+                    if (dataType === "Cases") {
+                        refLineChart.current.data.datasets.push(obj.cases.datasets[0]);
+                    }
+                    else if (dataType === "Deaths") {
+                        refLineChart.current.data.datasets.push(obj.deaths.datasets[0]);
+                    }
+                    else if (dataType === "New Cases") {
+                        refLineChart.current.data.datasets.push(obj.newCases.datasets[0]);
+                    }
+                    else if (dataType === "New Deaths") {
+                        refLineChart.current.data.datasets.push(obj.newDeaths.datasets[0]);
+                    }
+
                 }
                 refLineChart.current.update();
                 setRefresh(() => !refresh);
@@ -109,8 +129,13 @@ function Compare() {
             setApiResult(() => c + ": country not found");
         } finally {
             setLoading(() => false);
+            refreshState();
         }
 
+    }
+
+    function refreshState() {
+        setRefresh(() => !refresh);
     }
 
     function getColor() {
@@ -131,7 +156,7 @@ function Compare() {
         return colors.lastItem;
     }
 
-    function fetchData(c, d) {
+    async function fetchData(c, d) {
         setLoading(() => true);
         fetchDataAPI(c, d);
     }
@@ -156,13 +181,23 @@ function Compare() {
     }
 
     function changeDays(_days) {
-        // if (_days === "all") {
-        //     setOptions(() => options_all);
-        // } else {
-        //     setOptions(() => options_default);
-        // }
+        if (_days === "all") {
+            setOptions(() => options_all);
+        } else {
+            setOptions(() => options_default);
+        }
 
-        // fetchData(country, _days);
+        const array = country.slice(0, country.length);
+        const toRemove = document.querySelectorAll(".compare-titles span");
+
+        toRemove.forEach(e => {
+            removeData({ target: e });
+        })
+
+        array.forEach(e => {
+            // promise concurrence!
+            fetchData(e, _days)
+        })
     }
 
     function removeData(e) {
@@ -192,15 +227,38 @@ function Compare() {
         refLineChart.current.update();
     }
 
+    function changeData(type) {
+        refLineChart.current.data.datasets = [];
+
+        countryData.forEach(e => {
+            if (type === "Cases") {
+                if(e.cases.datasets[0])
+                refLineChart.current.data.datasets.push(e.cases.datasets[0]);
+            }
+            else if (type === "Deaths") {
+                refLineChart.current.data.datasets.push(e.deaths.datasets[0]);
+            }
+            else if (type === "New Cases") {
+                refLineChart.current.data.datasets.push(e.newCases.datasets[0]);
+            }
+            else if (type === "New Deaths") {
+                refLineChart.current.data.datasets.push(e.newDeaths.datasets[0]);
+            }
+        })
+
+        setDataType(() => type);
+        refLineChart.current.update();
+    }
+
     return <div>
         <Search submitCallback={addCountry} resetCallback={resetSuggestions} suggestionSubmit={suggestionSubmit} apiresult={apiresult} id="2" key="2" />
         {/* <div className="debug">
             {countryData.length}
         </div> */}
         <div className="country-title">
-            <h2 className="compare-titles" data-refresh={refresh}>{countryData.map((e, i) => {
+            <h3 className="compare-titles" data-refresh={refresh}>{countryData.map((e, i) => {
                 return <span className={e.name.length <= 3 ? "capitalize" : ""} onClick={removeData} key={i}>{e.name}</span>;
-            })}</h2>
+            })}</h3>
             <div className={loading ? "" : "stop-loading"}>
                 <span>loading data</span>
                 <div className="loading-svg">
@@ -209,7 +267,19 @@ function Compare() {
         </div>
         <div className="country-chart-container">
             <ul className="country-filters">
-                <div>
+                <div className="dropmenu-container">
+                    <div className="compare-dropmenu">
+                        <label className="li-selected"  htmlFor="drop">
+                            {dataType}
+                            <input id="drop" type="checkbox" style={{ display: "none" }}></input>
+                            <ul>
+                                <li className={dataType === "Cases" ? "data-selected" : ""} onClick={() => changeData("Cases")}>Cases</li>
+                                <li className={dataType === "Deaths" ? "data-selected" : ""} onClick={() => changeData("Deaths")}>Deaths</li>
+                                <li className={dataType === "New Cases" ? "data-selected" : ""} onClick={() => changeData("New Cases")}>New Cases</li>
+                                <li className={dataType === "New Deaths" ? "data-selected" : ""} onClick={() => changeData("New Deaths")}>New Deaths</li>
+                            </ul>
+                        </label>
+                    </div>
                 </div>
                 <div>
                     <li className={days === "all" ? "li-selected" : ""} onClick={() => { changeDays("all") }}>all</li>

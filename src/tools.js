@@ -28,7 +28,7 @@ const options_all = {
     animation: false,
     elements: {
         point: {
-            radius: 0.5,
+            radius: 0,
         },
         line: {
             borderWidth: 1,

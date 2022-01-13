@@ -1,5 +1,6 @@
 .compare-titles {
     display: flex;
+    flex-wrap: wrap;
     gap: 5px;
     cursor: pointer;
 
@@ -12,4 +13,68 @@
 
 .capitalize {
     text-transform: uppercase;
+}
+
+.dropmenu-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding-left: 10px;
+}
+
+.compare-dropmenu {
+    position: relative;
+    height: 30px;
+    width: 110px;
+    color: $font_gray;
+    user-select: none;
+    box-sizing: border-box;
+
+    label {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        text-align: center;
+        line-height: 30px;
+    }
+
+    ul {
+        display: none;
+        position: absolute;
+        width: 100%;
+        top: 30px;
+        left: 0;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        background-color: white;
+        z-index: 1;
+
+        li {
+            &:hover {
+                background-color: $bg_medium;
+            }
+        }
+    }
+
+    input {
+        &:checked {
+            & + ul {
+                display: block;
+            }
+        }
+    }
+}
+
+.data-selected {
+    color: white;
+    background-color: $menu-item-selected;
+
+    &:hover {
+        color: white !important;
+        background-color: $menu-item-selected !important;
+    }
 }

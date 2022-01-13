@@ -57,11 +57,14 @@
 .country-filters {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 0;
     padding: 0;
     list-style: none;
     gap: 5px;
     border-bottom: 1px solid $bg_dark;
+    color: $font_gray;
+
 
     div {
         display: flex;
@@ -69,7 +72,6 @@
 
     li {
         cursor: pointer;
-        color: $font_gray;
         padding: 5px 10px;
     }
 }
