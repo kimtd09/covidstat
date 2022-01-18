@@ -12,6 +12,8 @@ function Compare() {
     const [days, setDays] = useState("30");
     const [country] = useState([]);
     const [countryData, setCountryData] = useState([]);
+    const [dataCases, setDataCases] = useState([]);
+    const [dataDeaths, setDataDeaths] = useState([]);
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const [usedColor, setUsedColors] = useState([]);
@@ -89,6 +91,8 @@ function Compare() {
 
                 country.push(response.data.country.toLowerCase());
                 countryData.push(obj);
+                dataCases.push(obj.cases.datasets[0]);
+                dataDeaths.push(obj.deaths.datasets[0]);
                 setDays(() => d);
 
                 if (countryData.length === 1) {
@@ -230,15 +234,29 @@ function Compare() {
     function changeData(type) {
         refLineChart.current.data.datasets = [];
 
+        if (type === "Cases") {
+            dataCases.forEach(e => {
+                refLineChart.current.data.datasets.push(e);
+            })
+        }
+        else if (type === "Deaths") {
+            dataDeaths.forEach(e => {
+                refLineChart.current.data.datasets.push(e);
+            })
+        }
+
+
         countryData.forEach(e => {
-            if (type === "Cases") {
-                if(e.cases.datasets[0])
-                refLineChart.current.data.datasets.push(e.cases.datasets[0]);
-            }
-            else if (type === "Deaths") {
-                refLineChart.current.data.datasets.push(e.deaths.datasets[0]);
-            }
-            else if (type === "New Cases") {
+            // if (type === "Cases") {
+            //     if(e.cases.datasets[0])
+            //     refLineChart.current.data.datasets.push(e.cases.datasets[0]);
+            // }
+            // else 
+            // if (type === "Deaths") {
+            //     refLineChart.current.data.datasets.push(e.deaths.datasets[0]);
+            // }
+            // else 
+            if (type === "New Cases") {
                 refLineChart.current.data.datasets.push(e.newCases.datasets[0]);
             }
             else if (type === "New Deaths") {
@@ -269,7 +287,7 @@ function Compare() {
             <ul className="country-filters">
                 <div className="dropmenu-container">
                     <div className="compare-dropmenu">
-                        <label className="li-selected"  htmlFor="drop">
+                        <label className="li-selected" htmlFor="drop">
                             {dataType}
                             <input id="drop" type="checkbox" style={{ display: "none" }}></input>
                             <ul>

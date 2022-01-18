@@ -12,7 +12,6 @@ function Country() {
     const [country, setCountry] = useState("France");
     const [days, setDays] = useState("30");
     const [data, setData] = useState({ labels: ["J"], datasets: [{ label: "a", backgroundColor: COLORS.yellow.border, borderColor: COLORS.yellow.border, data: [1] }] });
-    const [scale, setScale] = useState(1);
     const [loading, setLoading] = useState(false);
     const [apiresult, setApiResult] = useState("");
     const [options, setOptions] = useState(options_default);
@@ -37,7 +36,6 @@ function Country() {
         const _url0 = `https://api.covid19api.com/total/dayone/country/${_country}`;
         const _url = `https://corona.lmao.ninja/v2/historical/${_country}?lastdays=${_days}`;
 
-
         try {
             const response = await axios.get(_url);
             setCountry(_country);
@@ -47,7 +45,7 @@ function Country() {
             const caseArray = Object.values(response.data.timeline.cases);
             const deathArray = Object.values(response.data.timeline.deaths);
 
-            const _newLineData = {
+            const _newLineData1 = {
                 labels: labelArray, datasets: [
                     { label: "Total Cases", backgroundColor: COLORS.yellow.border, borderColor: COLORS.yellow.border, data: caseArray }
                 ]
@@ -66,8 +64,10 @@ function Country() {
                     caseIncrementArray.push(0);
                     deathIncrementArray.push(0);
                 } else {
-                    caseIncrementArray.push(caseArray[i] - caseArray[i - 1]);
-                    deathIncrementArray.push(deathArray[i] - deathArray[i - 1]);
+                    const newCase = caseArray[i] - caseArray[i - 1];
+                    const newDeath = deathArray[i] - deathArray[i - 1];
+                    caseIncrementArray.push(newCase >= 0 ? newCase : 0);
+                    deathIncrementArray.push(newDeath >= 0 ? newDeath : 0);
                 }
             }
 
@@ -81,12 +81,9 @@ function Country() {
             };
 
             refLineChart0.current.data = _newLineData0;
-            refLineChart0.current.update();
-
-
-
-            refLineChart1.current.data = _newLineData;
+            refLineChart1.current.data = _newLineData1;
             refLineChart2.current.data = _newLineData2;
+            refLineChart0.current.update();
             refLineChart1.current.update();
             refLineChart2.current.update();
         } catch (e) {
@@ -155,8 +152,10 @@ function Country() {
                     caseIncrementArray.push(0);
                     deathIncrementArray.push(0);
                 } else {
-                    caseIncrementArray.push(caseArray[i] - caseArray[i - 1]);
-                    deathIncrementArray.push(deathArray[i] - deathArray[i - 1]);
+                    const newCase = caseArray[i] - caseArray[i - 1];
+                    const newDeath = deathArray[i] - deathArray[i - 1];
+                    caseIncrementArray.push(newCase >= 0 ? newCase : 0);
+                    deathIncrementArray.push(newDeath >= 0 ? newDeath : 0);
                 }
             }
 
