@@ -8,6 +8,10 @@ body {
     align-items: center;
     margin: 0 var(--page-margin);
     font-family: "Lato Regular";
+
+    * {
+        max-width: 1000px;
+    }
 }
 
 header {

@@ -70,8 +70,10 @@ function Compare() {
                         caseIncrementArray.push(0);
                         deathIncrementArray.push(0);
                     } else {
-                        caseIncrementArray.push(caseArray[i] - caseArray[i - 1]);
-                        deathIncrementArray.push(deathArray[i] - deathArray[i - 1]);
+                        const newCase = caseArray[i] - caseArray[i - 1];
+                        const newDeath = deathArray[i] - deathArray[i - 1];
+                        caseIncrementArray.push(newCase >= 0 ? newCase : 0);
+                        deathIncrementArray.push(newDeath >= 0 ? newDeath : 0);
                     }
                 }
 

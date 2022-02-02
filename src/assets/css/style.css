@@ -22,6 +22,10 @@ body {
   font-family: "Lato Regular";
 }
 
+body * {
+  max-width: 1000px;
+}
+
 header {
   display: -webkit-box;
   display: -ms-flexbox;
